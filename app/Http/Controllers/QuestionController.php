@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Question;
+
 class QuestionController extends Controller
 {
     /**
@@ -45,7 +47,13 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        return view ('questions/show');
+        $data = array();
+
+        $question = Question::find($id);
+
+        $data['object'] = $question;
+
+        return view ('questions/show', $data);
     }
 
     /**

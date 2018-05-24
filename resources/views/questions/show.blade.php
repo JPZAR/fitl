@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Show Questions Page</title>
-    </head>
-    <body>
-        <h1>Show Questions Page</h1>
-        <p>More Coming Soon...</p>
-    </body>
-</html>
+@extends('layouts.master')
+
+@section('title', $object->title)
+
+@section('content')
+<h1>{{$object->title}}</h1>
+<p>{{$object->description}}</p>
+<pre>
+    {{$object->code}}
+</pre>
+<p>{{$object->created_at}}</p>
+@endsection

@@ -1,3 +1,9 @@
-<?php
+@extends('layouts.master')
 
-        echo 'This is the About Page';
+@section('title', 'About Page')
+
+@section('content')
+<h1>About Us</h1>
+<p>Some About Us paragraph 1</p>
+<p>Another About Us paragraph 2</p>
+@endsection
