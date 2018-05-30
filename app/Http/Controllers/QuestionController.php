@@ -35,7 +35,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        $question = new Question;
+        $question = new Question; // create new question object
         $data = array();
         $data['question'] = $question; //['question'] is the array key name and referenced in {!! Form::model($question,
         // ['action' => 'QuestionController@store']) !!} in the create.blade.php file. = $question is the new empty model object
@@ -99,9 +99,10 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id) //This is to display the edit page
     {
-        //
+        $question = Question::findOrFail($id);
+        return view('questions.edit', ['question' => $question]);
     }
 
     /**
@@ -111,9 +112,24 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) //This is to do the actual update in the database
     {
-        //
+        $question = Question::findOrFail($id);
+        //set the question's data from the form data
+        $question->title = $request->title;
+        $question->description = $request->description;
+        $question->code = $request->code;
+        //if the save fails, redirect back to the edit page and show the errors
+        if(!$question->save()) {
+            return redirect()
+                ->action('QuestionController@edit', $question->id)
+                ->with('errors', $question->getErrors())
+                ->withInput();
+        }
+        //success! Redirect back to the index page and pass a success message
+        return redirect()
+            ->action('QuestionController@index') //redirect back to the index action
+            ->with('message', '<div class="alert alert-success">The question was updated!</div>');
     }
 
     /**
@@ -124,6 +140,10 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $question = Question::findOrFail($id);
+        $question->delete();
+        return redirect()
+            ->action('QuestionController@index')
+            ->with('message', '<div class="alert alert-info">The question was deleted!</div>');
     }
 }
